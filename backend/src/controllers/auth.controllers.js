@@ -6,6 +6,8 @@ import cloudinary from "../lib/cloudinary.js"
 export const signup = async (req,res) => {
     
     const {fullName , email, password} = req.body;
+    
+    
 
     try {
         if(!fullName || !email || !password){
@@ -36,15 +38,14 @@ export const signup = async (req,res) => {
             email,
             password:hashedPassword
         });
-
         if(newUser){
             generateToken(newUser._id,res);
             await newUser.save();
             res.status(201).json({
-                _id:user._id,
-                fullName:user.fullName,
-                email:user.email,
-                profilePic:user.profilePic
+                _id:newUser._id,
+                fullName:newUser.fullName,
+                email:newUser.email,
+                profilePic:newUser.profilePic
             });
         }
 
@@ -53,7 +54,6 @@ export const signup = async (req,res) => {
                 message:"Something went wrong"
             });
         }
-
 
     } catch (error) {
         console.log("Error in signup",error.message);
