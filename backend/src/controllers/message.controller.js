@@ -4,6 +4,7 @@ import cloudinary from "../lib/cloudinary.js"
 
 export const getUsersForSidebar = async (req,res) => {
     try {
+        
         const LoggedInUserId = req.user._id;
         const filteredUsers = await User.find( { _id: {$ne:LoggedInUserId} } ).select("-password");
         res.status(200).json(filteredUsers);
