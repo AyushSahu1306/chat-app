@@ -13,11 +13,19 @@ const ChatContainer = () => {
     getMessages,
     isMessagesLoading,
     selectedUser,
+    subscribeToMessages,
+    unsubscribeFromMessages,
   } = useChatStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
 
-  
+  useEffect(() => {
+    getMessages(selectedUser._id);
+
+    subscribeToMessages();
+
+    return () => unsubscribeFromMessages();
+  }, [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
 
   useEffect(() => {
     if (messageEndRef.current && messages) {
@@ -51,8 +59,8 @@ const ChatContainer = () => {
                 <img
                   src={
                     message.senderId === authUser._id
-                      ? authUser.profilePic || "/avatar.png"
-                      : selectedUser.profilePic || "/avatar.png"
+                      ? authUser.profilePic || "./avatar.png"
+                      : selectedUser.profilePic || "./avatar.png"
                   }
                   alt="profile pic"
                 />

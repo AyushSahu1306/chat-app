@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+
+  const {setTyping , isTyping } = useChatStore();
   const fileInputRef = useRef(null);
   const { sendMessage } = useChatStore();
 
@@ -22,6 +24,12 @@ const MessageInput = () => {
     };
     reader.readAsDataURL(file);
   };
+
+  const handleTextInput = (e)=>{
+    e.preventDefault();
+    
+    setText(e.target.value);
+  }
 
   const removeImage = () => {
     setImagePreview(null);
@@ -76,7 +84,8 @@ const MessageInput = () => {
             className="w-full input input-bordered rounded-lg input-sm sm:input-md"
             placeholder="Type a message..."
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={handleTextInput}
+            onFocus={(e)=>setTyping(true)}
           />
           <input
             type="file"
